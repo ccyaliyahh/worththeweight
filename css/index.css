@@ -1,3 +1,107 @@
-h1 {
-  color: #909ddb;
+:root {
+  --main-height: 95vh; 
+  --main-width: 70vw; 
+  --option-color: rgb(158, 185, 239); 
+  --def-width-1: calc(0.6*var(--main-width));
+  --def-width-2: calc(0.75*var(--main-width));
+  --def-margin: calc(0.05*var(--main-height)); 
+}
+
+* {
+  outline: 2px black solid; 
+  font-family: "courier new"; 
+}
+
+.main {
+  outline-color: red; 
+
+  display: flex; 
+  flex-direction: column; 
+
+  align-items: center; 
+  justify-content: flex-start; 
+
+  width: auto; 
+  height: var(--main-height); 
+}
+
+.header {
+  outline-color: orange; 
+
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+
+  margin-top: var(--def-margin); 
+
+  width: var(--def-width-1); 
+  height: calc(0.15*var(--main-height)); 
+}
+
+.options {
+  outline-color: green; 
+
+  display: flex; 
+  align-items: center;
+  justify-content: center; 
+
+  margin-top: var(--def-margin); 
+
+  width: auto; 
+  height: calc(0.1*var(--main-height)); 
+  gap: calc(0.03*var(--main-height));
+}
+
+.option {
+  background-color: var(--option-color); 
+  border-radius: 20px; 
+  
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+
+  width: calc((var(--def-width-1) - calc(0.03*var(--main-height)))/2); 
+  height: calc(0.1*var(--main-height));
+
+  color: white; 
+  font-size: 25px; 
+  font-weight: bold; 
+  text-align: center;
+}
+
+.calculator {
+  outline-color: blue;
+  
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start;
+
+  margin-top: calc(0.05*var(--main-height));
+
+  width: var(--def-width-2);
+  height: calc(0.50*var(--main-height));
+}
+
+.about {
+  outline-color: pink;
+
+  width: var(--def-width-1); 
+  height: calc(0.15*var(--main-height));
+  /* gap: calc(0.01*var(--main-height)); */
+}
+
+.params {
+  outline-color: purple;
+  
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* margin-top: calc(0.05*var(--main-height)); */
+
+  width: auto;
+  height: calc(0.25*var(--main-height));
+  gap: calc(0.01*var(--main-height));
 }
