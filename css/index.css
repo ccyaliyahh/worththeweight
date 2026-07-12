@@ -2,9 +2,18 @@
   --main-height: 95vh; 
   --main-width: 70vw; 
   --option-color: rgb(158, 185, 239); 
+  --option-color-active: rgb(125, 155, 215); 
   --def-width-1: calc(0.6*var(--main-width));
   --def-width-2: calc(0.75*var(--main-width));
   --def-margin: calc(0.05*var(--main-height)); 
+}
+
+.active {
+  background-color: var(--option-color-active);
+}
+
+.inactive {
+  background-color: var(--option-color);
 }
 
 * {
@@ -53,7 +62,6 @@
 }
 
 .option {
-  background-color: var(--option-color); 
   border-radius: 20px; 
   
   display: flex; 

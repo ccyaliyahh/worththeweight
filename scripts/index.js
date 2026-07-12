@@ -1,9 +1,9 @@
 // F = (G - C*(1 - w)) / w 
 // F = final grade, G = target grade, w = % weight as decimal, C = current grade 
-function calcReqFinalGrade (currGrade, targetGrade, finalWeight) {
+function calcReqGrade (currGrade, targetGrade, finalWeight) {
   let w = finalWeight / 100; 
-  let reqFinalGrade = (targetGrade - (currGrade * (1 - w))) / w; 
-  return reqFinalGrade; 
+  let reqGrade = (targetGrade - (currGrade * (1 - w))) / w; 
+  return reqGrade; 
 } 
 
 // G = F*w + C*(1 - w) 
@@ -27,18 +27,28 @@ function clearParams(array) {
   }
 }
 
-function createAbout(arrName) {
-  if (arrName == "finalGrade") {
+function createAbout(arrName) { //CREATE ABOUT TEXT 
+  const options = document.getElementsByClassName("option");
+  for (let i = 0; i < options.length; i++) {
+    if (options[i].id == arrName) {
+      options[i].classList.remove("inactive"); 
+      options[i].classList.add("active"); 
+    } else {
+      options[i].classList.remove("active"); 
+      options[i].classList.add("inactive"); 
+    }
+  } 
+  if (arrName == "reqGrade") {
     const abouts = document.getElementsByClassName("about"); 
-    abouts[0].innerHTML = "final grade calculator!!"
+    abouts[0].innerHTML = "final grade calculator: calculates what grade you'll need on the final exam to get your desired class grade"; 
   } else if (arrName == "courseGrade") {
     const abouts = document.getElementsByClassName("about");
-    abouts[0].innerHTML = "course grade calculator!!"
+    abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final"; 
   }
 }
 
 function createParams(array) {
-  for (var i = 0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) { //CREATE PARAM ELEMENTS 
     const element = document.createElement("input");
     element.classList.add("param");
     element.type = "text";
@@ -55,8 +65,8 @@ function createParams(array) {
 }
 
 //START 
-var finalGrade = {
-  name: "finalGrade", 
+var reqGrade = {
+  name: "reqGrade", 
   value: ["currGrade", "targetGrade", "finalWeight"]
 }; 
 var courseGrade = {
@@ -64,11 +74,12 @@ var courseGrade = {
   value: ["currGrade", "finalGrade", "finalWeight"]
 }; 
 
-createScreen(finalGrade); 
+var def = reqGrade; 
+createScreen(def); 
 
-const finalGradeButton = document.getElementById("reqGrade"); 
-finalGradeButton.addEventListener("click", () => {
-  createScreen(finalGrade); 
+const reqGradeButton = document.getElementById("reqGrade"); 
+reqGradeButton.addEventListener("click", () => {
+  createScreen(reqGrade); 
 }); 
 
 const courseGradeButton = document.getElementById("courseGrade");
