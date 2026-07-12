@@ -15,19 +15,19 @@ function calcCourseGrade (currGrade, finalGrade, finalWeight) {
 } 
 
 function createScreen(array) {
-  clearParams(array.value); 
+  clearInputs(array.value); 
   createAbout(array.name); 
-  createParams(array.value); 
+  createInputs(array.value); 
 }
 
-function clearParams(array) {
-  const params = document.getElementsByClassName("params"); 
-  while (params[0].firstChild) {
-    params[0].removeChild(params[0].firstChild); 
+function clearInputs(array) {
+  const inputs = document.getElementsByClassName("inputs"); 
+  while (inputs[0].firstChild) {
+    inputs[0].removeChild(inputs[0].firstChild); 
   }
 }
 
-function createAbout(arrName) { //CREATE ABOUT TEXT 
+function createAbout(arrName) { 
   const options = document.getElementsByClassName("option");
   for (let i = 0; i < options.length; i++) {
     if (options[i].id == arrName) {
@@ -40,29 +40,39 @@ function createAbout(arrName) { //CREATE ABOUT TEXT
   } 
   if (arrName == "reqGrade") {
     const abouts = document.getElementsByClassName("about"); 
-    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll to get your desired class grade"; 
+    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll to get your desired class grade!!"; 
   } else if (arrName == "courseGrade") {
     const abouts = document.getElementsByClassName("about");
-    abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final"; 
+    abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final!!"; 
   }
 }
 
-function createParams(array) {
-  const params = document.getElementsByClassName("params");
-  for (var i = 0; i < array.length; i++) { //CREATE PARAM ELEMENTS 
-    const input = document.createElement("input");
-    input.classList.add("param");
-    input.type = "text";
-    input.id = array[i];
-    input.placeholder = "enter " + array[i]; 
-    params[0].appendChild(input); 
+function createInputs(array) {
+  const inputs = document.getElementsByClassName("inputs");
+  for (var i = 0; i < array.length; i++) { 
+    const inputDiv = document.createElement("div");
+    inputDiv.classList.add("input"); 
+
+    const inputDivText = document.createElement("div"); 
+    inputDivText.classList.add("inputText")
+    inputDivText.innerHTML = "current grade: "; 
+
+    const inputDivInput = document.createElement("input"); 
+    inputDivInput.classList.add("inputParam");
+    inputDivInput.type = "text";
+    inputDivInput.id = array[i];
+    inputDivInput.placeholder = array[i]; 
+
+    inputDiv.appendChild(inputDivText); 
+    inputDiv.appendChild(inputDivInput); 
+    inputs[0].appendChild(inputDiv);
   }
   const enter = document.createElement("input"); 
-  enter.classList.add("param"); 
+  enter.classList.add("inputParam"); 
   enter.type = "submit"; 
   enter.id = "submit"; 
   enter.value = "submit"; 
-  params[0].appendChild(enter);
+  inputs[0].appendChild(enter);
 }
 
 //START 
