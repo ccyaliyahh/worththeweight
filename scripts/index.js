@@ -18,6 +18,7 @@ function createScreen(array) {
   clearInputs(array.value); 
   createAbout(array.name); 
   createInputs(array.value); 
+  createEnter(); 
 }
 
 function clearInputs(array) {
@@ -67,12 +68,18 @@ function createInputs(array) {
     inputDiv.appendChild(inputDivInput); 
     inputs[0].appendChild(inputDiv);
   }
-  const enter = document.createElement("input"); 
-  enter.classList.add("inputParam"); 
-  enter.type = "submit"; 
-  enter.id = "submit"; 
-  enter.value = "submit"; 
-  inputs[0].appendChild(enter);
+}
+
+function createEnter() {
+  const enters = document.getElementsByClassName("enter");
+  
+  const enterInput = document.createElement("input");
+  enterInput.classList.add("enterParam");
+  enterInput.type = "submit";
+  enterInput.id = "submit";
+  enterInput.value = "submit";
+
+  enters[0].appendChild(enterInput);
 }
 
 //START 

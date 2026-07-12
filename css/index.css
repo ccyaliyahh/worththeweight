@@ -15,7 +15,7 @@
 }
 
 * {
-  outline: 2px black solid; 
+  /* outline: 2px black solid;  */
   font-family: "courier new"; 
 }
 
@@ -93,7 +93,7 @@
   outline-color: pink;
 
   width: var(--def-width-1); 
-  height: calc(0.1*var(--main-height));
+  height: calc(0.07*var(--main-height));
   
   color: black;
   font-size: 20px;
@@ -125,20 +125,40 @@
   width: var(--def-width-1);
   height: calc(calc(0.25*var(--main-height))/3);
   gap: calc(0.03*var(--main-height));
-
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
 }
 
 .inputText {
-  outline-color: blue;
+  outline-color: blue; 
+  
+  color: black;
+  font-size: 27px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .inputParam {
   outline-color: red;
 
-  width: calc(0.20*var(--main-width));
-  height: calc(0.03*var(--main-height));
+  width: calc(0.25*var(--main-width));
+  height: calc(0.05*var(--main-height));
+}
+
+.enter {
+  outline-color: pink;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: var(--def-width-1);
+  height: calc(0.25*var(--main-height));
+
+  margin-top: var(--def-margin);
+}
+
+.enterParam {
+  outline-color: red;
+
+  width: calc(0.25*var(--main-width));
+  height: calc(0.09*var(--main-height));
 }
