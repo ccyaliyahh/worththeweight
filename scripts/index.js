@@ -40,7 +40,7 @@ function createAbout(arrName) { //CREATE ABOUT TEXT
   } 
   if (arrName == "reqGrade") {
     const abouts = document.getElementsByClassName("about"); 
-    abouts[0].innerHTML = "final grade calculator: calculates what grade you'll need on the final exam to get your desired class grade"; 
+    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll to get your desired class grade"; 
   } else if (arrName == "courseGrade") {
     const abouts = document.getElementsByClassName("about");
     abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final"; 
@@ -48,20 +48,21 @@ function createAbout(arrName) { //CREATE ABOUT TEXT
 }
 
 function createParams(array) {
+  const params = document.getElementsByClassName("params");
   for (var i = 0; i < array.length; i++) { //CREATE PARAM ELEMENTS 
-    const element = document.createElement("input");
-    element.classList.add("param");
-    element.type = "text";
-    element.id = array[i];
-    element.name = array[i]; 
-    element.placeholder = "enter " + array[i]; 
-
-    element.style.height = "5vh";
-    element.style.width = "20vw";
-
-    const params = document.getElementsByClassName("params");
-    params[0].appendChild(element); 
+    const input = document.createElement("input");
+    input.classList.add("param");
+    input.type = "text";
+    input.id = array[i];
+    input.placeholder = "enter " + array[i]; 
+    params[0].appendChild(input); 
   }
+  const enter = document.createElement("input"); 
+  enter.classList.add("param"); 
+  enter.type = "submit"; 
+  enter.id = "submit"; 
+  enter.value = "submit"; 
+  params[0].appendChild(enter);
 }
 
 //START 
