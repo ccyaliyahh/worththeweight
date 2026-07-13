@@ -17,8 +17,10 @@ function calcCourseGrade (currGrade, finalGrade, finalWeight) {
 // I = (G*C + N*c) / (C + c)
 // I = gpa impact, G = current gpa, C = completed credits, N = new course grade, c = new course credits, 
 function calcGpaImpact (currGPA, compCreds, newGrade, newCreds) {
-  let newGPA = ((currGPA * compCreds) + (newGrade * newCreds)) / (compCreds + newCreds); 
-  let gpaImpact = newGPA - currGPA; 
+  let totalPoints = currGPA * compCreds + newGrade * newCreds; 
+  let totalCreds = parseInt(compCreds) + parseInt(newCreds); 
+  let newGPA = totalPoints / totalCreds; 
+  let gpaImpact = Math.round((newGPA - currGPA) * 1000) / 1000; 
   return {newGPA, gpaImpact}; 
 }
 
