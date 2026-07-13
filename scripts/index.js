@@ -14,6 +14,14 @@ function calcCourseGrade (currGrade, finalGrade, finalWeight) {
   return courseGrade; 
 } 
 
+// I = (G*C + N*c) / (C + c)
+// I = gpa impact, G = current gpa, C = completed credits, N = new course grade, c = new course credits, 
+function calcGpaImpact (currGPA, compCreds, newGrade, newCreds) {
+  let newGPA = ((currGPA * compCreds) + (newGrade * newCreds)) / (compCreds + newCreds); 
+  let gpaImpact = newGPA - currGPA; 
+  return {newGPA, gpaImpact}; 
+}
+
 function createScreen(array, array2) {
   clearScreen(); 
   createAbout(array.name); 
@@ -43,7 +51,7 @@ function createAbout(arrName) {
   } 
   if (arrName == "reqGrade") {
     const abouts = document.getElementsByClassName("about"); 
-    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll to get your desired class grade!!"; 
+    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll need to get desired class grade!!"; 
   } else if (arrName == "courseGrade") {
     const abouts = document.getElementsByClassName("about");
     abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final!!"; 
@@ -82,7 +90,7 @@ function createEnter() {
   const enters = document.getElementsByClassName("enter");
   const enterInput = document.createElement("button");
   enterInput.classList.add("enterParam"); 
-  enterInput.textContent = mode.name; 
+  enterInput.textContent = "submit"; 
   enterInput.id = "enterButton"; 
   enters[0].appendChild(enterInput); 
 }
@@ -98,11 +106,19 @@ let courseGrade = {
 }; 
 let reqGradeText = {
   name: "reqGradeText", 
-  value: ["current grade: ", "target grade: ", "final weight: "]
+  value: ["current grade: ", "target grade: ", "final exam weight: "]
 }
 let courseGradeText = {
   name: "courseGradeText",
-  value: ["current grade: ", "final grade: ", "final weight: "]
+  value: ["current grade: ", "final grade: ", "final exam weight: "]
+}
+let gpaImpact = {
+  name: "gpaImpact",
+  value: ["currGPA: ", "compCreds: ", "newGrade", "newCreds"]
+}
+let gpaImpactText = {
+  name: "gpaImpactText",
+  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: "]
 }
 
 let mode = reqGrade; 
@@ -123,6 +139,13 @@ courseGradeButton.addEventListener("click", () => {
   createScreen(courseGrade, courseGradeText);
 }); 
 
+const gpaImpactButton = document.getElementById("gpaImpact");
+gpaImpactButton.addEventListener("click", () => {
+  mode = gpaImpact;
+  mode2 = gpaImpactText;
+  createScreen(gpaImpact, gpaImpactText);
+}); 
+
 const enters = document.getElementsByClassName("enter"); 
 enters[0].addEventListener("click", (event) => {
   const enterButton = event.target.closest(".enterParam");
@@ -130,14 +153,15 @@ enters[0].addEventListener("click", (event) => {
 });
 
 function displayResult(mode) {
-
   let form = document.getElementById("form");
-
   if (mode.name == "reqGrade") {
     text = calcReqGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value); 
     alert("you will need a " + text + "% to get a " + form.elements[1].value + " in the class!");
   } else if (mode.name == "courseGrade") {
     text = calcCourseGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value); 
     alert("you will have a " + text + " in the class!");
+  } else if (mode.name == "gpaImpact") {
+    const {newGPA: newGPA, gpaImpact: gpaImpact} = calcGpaImpact(form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value);
+    alert("your gpa changed by " + gpaImpact + " and is now " + newGPA + "!");
   }
 }
