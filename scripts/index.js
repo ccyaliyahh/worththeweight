@@ -17,6 +17,19 @@ function calcCourseGrade (currGrade, finalGrade, finalWeight) {
 // I = (G*C + N*c) / (C + c)
 // I = gpa impact, G = current gpa, C = completed credits, N = new course grade, c = new course credits, 
 function calcGpaImpact (currGPA, compCreds, newGrade, newCreds) {
+  if (!parseInt(newGrade)) {
+    let base = Math.abs(newGrade.charCodeAt(0)-69);  //doesn't work for F (it's E)
+    if (newGrade.includes("F")) { 
+      base = 0; 
+    } else {
+      if (newGrade.includes("+") && !newGrade.includes("A")) {
+        base += 0.3;
+      } else if (newGrade.includes("-") && !newGrade.includes("D")) {
+        base -= 0.3;
+      }
+    }
+    newGrade = base; 
+  }
   let totalPoints = currGPA * compCreds + newGrade * newCreds; 
   let totalCreds = parseInt(compCreds) + parseInt(newCreds); 
   let newGPA = Math.round((totalPoints / totalCreds) * 100) / 100; 
@@ -102,17 +115,17 @@ let reqGrade = {
   name: "reqGrade", 
   value: ["currGrade", "targetGrade", "finalWeight"]
 }; 
+let reqGradeText = {
+  name: "reqGradeText",
+  value: ["current grade: ", "target grade: ", "final exam weight: ", "eg: 88.4", "eg: 90", "eg: 15"]
+}
 let courseGrade = {
   name: "courseGrade", 
   value: ["currGrade", "finalGrade", "finalWeight"]
 }; 
-let reqGradeText = {
-  name: "reqGradeText", 
-  value: ["current grade: ", "target grade: ", "final exam weight: "]
-}
 let courseGradeText = {
   name: "courseGradeText",
-  value: ["current grade: ", "final grade: ", "final exam weight: "]
+  value: ["current grade: ", "final grade: ", "final exam weight: ", "eg: 88.4", "eg: 94.5", "eg: 15"]
 }
 let gpaImpact = {
   name: "gpaImpact",
@@ -120,7 +133,7 @@ let gpaImpact = {
 }
 let gpaImpactText = {
   name: "gpaImpactText",
-  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: "]
+  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "eg: 3.5", "eg: 30", "eg: A- or 3.3", "eg: 3"]
 }
 
 let mode = reqGrade; 
