@@ -53,8 +53,8 @@ function createAbout(arrName) {
 function createInputs(arrVal, arrVal2) {
   const inputs = document.getElementsByClassName("inputs");
   const inputForm = document.createElement("form"); 
-  // inputForm.action = "/index.html"; 
-  for (var i = 0; i < arrVal.length; i++) { 
+  inputForm.id = "form"; 
+  for (let i = 0; i < arrVal.length; i++) { 
     const inputDiv = document.createElement("div");
     inputDiv.classList.add("input"); 
     inputDiv.id = arrVal[i] + "Div"; 
@@ -88,25 +88,25 @@ function createEnter() {
 }
 
 //START 
-var reqGrade = {
+let reqGrade = {
   name: "reqGrade", 
   value: ["currGrade", "targetGrade", "finalWeight"]
 }; 
-var courseGrade = {
+let courseGrade = {
   name: "courseGrade", 
   value: ["currGrade", "finalGrade", "finalWeight"]
 }; 
-var reqGradeText = {
+let reqGradeText = {
   name: "reqGradeText", 
   value: ["current grade: ", "target grade: ", "final weight: "]
 }
-var courseGradeText = {
+let courseGradeText = {
   name: "courseGradeText",
   value: ["current grade: ", "final grade: ", "final weight: "]
 }
 
-var mode = reqGrade; 
-var mode2 = reqGradeText; 
+let mode = reqGrade; 
+let mode2 = reqGradeText; 
 createScreen(mode, mode2); 
 
 const reqGradeButton = document.getElementById("reqGrade"); 
@@ -130,9 +130,14 @@ enters[0].addEventListener("click", (event) => {
 });
 
 function displayResult(mode) {
+
+  let form = document.getElementById("form");
+
   if (mode.name == "reqGrade") {
-    alert("Button clicked! reqGrade");
+    text = calcReqGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value); 
+    alert("you will need a " + text + "% to get a " + form.elements[1].value + " in the class!");
   } else if (mode.name == "courseGrade") {
-    alert("Button clicked! courseGrade");
+    text = calcCourseGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value); 
+    alert("you will have a " + text + " in the class!");
   }
 }
