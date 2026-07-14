@@ -111,7 +111,6 @@ function createEnter() {
 
 //TO-DO: 
 //add example inputs to input placeholders 
-//add range restrictions to inputs {no empty, no zero, 0-100, A-F, etc} 
 //maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
 
 //START 
@@ -133,7 +132,7 @@ let courseGradeText = {
 }
 let gpaImpact = {
   name: "gpaImpact",
-  value: ["currGPA: ", "compCreds: ", "newGrade", "newCreds"]
+  value: ["currGPA", "compCreds", "newGrade", "newCreds"]
 }
 let gpaImpactText = {
   name: "gpaImpactText",
@@ -168,36 +167,66 @@ gpaImpactButton.addEventListener("click", () => {
 const enters = document.getElementsByClassName("enter");
 enters[0].addEventListener("click", (event) => {
   const enterButton = event.target.closest(".enterParam");
-  if (enterButton) { displayResult(mode); }
+  if (enterButton && checkInputs()) { 
+    displayResult(mode); 
+  }
 });
 
+function checkInputs() {
+  const form = document.getElementById("form");
+  for (let i = 0; i < form.length; i++) {
+    let id = form.elements[i].id; 
+    let stringVal = form.elements[i].value; 
+    let intVal = parseInt(form.elements[i].value); 
+    if (stringVal == "" || intVal < 0) {
+      alert("please enter a non-negative value for " + id); 
+      return false; 
+    } else if (id != "newGrade" && !intVal) {
+      alert("please enter a numerical value for " + id); 
+      return false; 
+    } else if (id != "compCreds" && intVal > 100) {
+      alert("please enter a value between 0 - 100 for " + id); 
+      return false;
+    } else if (id == "newGrade" && !intVal && (stringVal.charCodeAt(0) < 65 || stringVal.charCodeAt(0) > 70 || stringVal.charCodeAt(0) == 69)) {
+      alert("please enter a numerical value between 0 - 100 or a valid grade letter for " + id); 
+      return false; 
+    } 
+  }
+  return true; 
+}
+
 function displayResult(mode) {
-  let form = document.getElementById("form");
+  const form = document.getElementById("form");
   if (mode.name == "reqGrade") {
     text = calcReqGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
-    alert("you will need a " + text + "% to get a " + form.elements[1].value + " in the class!");
+    alert("you will need at least a " + text + "% to get a " + form.elements[1].value + " in the class!");
   } else if (mode.name == "courseGrade") {
     text = calcCourseGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
     alert("you will have a " + text + " in the class!");
   } else if (mode.name == "gpaImpact") {
     const { newGPA: newGPA, gpaImpact: gpaImpact } = calcGpaImpact(form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value);
-    let text; 
-    if (gpaImpact < 0) {
-      text = " negative "; 
-    } else if (gpaImpact > 0) {
-      text = " positive "; 
-    } else {
-      text = " "; 
-    } 
-    if (Math.abs(gpaImpact) >= 0.100) {
-      text = "high" + text + "impact";
-    } else if (Math.abs(gpaImpact) >= 0.050) {
-      text = "moderate" + text + "impact";
-    } else if (Math.abs(gpaImpact) >= 0.010) {
-      text = "slight" + text + "impact";
-    } else {
-      text = "negligible" + text + "impact";
-    }
+    text = generateGPAText(gpaImpact); 
     alert("new gpa: " + newGPA + "\nchanges gpa by  " + gpaImpact + "  – " + text);
   }
+}
+
+function generateGPAText(gpaImpact) {
+  let text;
+  if (gpaImpact < 0) {
+    text = " negative ";
+  } else if (gpaImpact > 0) {
+    text = " positive ";
+  } else {
+    text = " ";
+  }
+  if (Math.abs(gpaImpact) >= 0.100) {
+    text = "high" + text + "impact";
+  } else if (Math.abs(gpaImpact) >= 0.050) {
+    text = "moderate" + text + "impact";
+  } else if (Math.abs(gpaImpact) >= 0.010) {
+    text = "slight" + text + "impact";
+  } else {
+    text = "negligible" + text + "impact";
+  }
+  return text; 
 }
