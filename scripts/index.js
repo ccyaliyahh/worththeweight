@@ -91,7 +91,7 @@ function createInputs(arrVal, arrVal2) {
     inputDivInput.type = "text";
     inputDivInput.name = arrVal[i];
     inputDivInput.id = arrVal[i];
-    inputDivInput.placeholder = arrVal[i];
+    inputDivInput.placeholder = arrVal2[i+(arrVal2.length/2)];
 
     inputDiv.appendChild(inputDivText);
     inputDiv.appendChild(inputDivInput);
@@ -110,7 +110,6 @@ function createEnter() {
 }
 
 //TO-DO: 
-//add example inputs to input placeholders 
 //maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
 
 //START 
@@ -120,7 +119,7 @@ let reqGrade = {
 };
 let reqGradeText = {
   name: "reqGradeText",
-  value: ["current grade: ", "target grade: ", "final exam weight: ", "eg: 88.4", "eg: 90", "eg: 15"]
+  value: ["current grade: ", "target grade: ", "final exam weight: ", "currGrade eg: 88.4", "targetGrade eg: 90", "finalWeight eg: 15"]
 }
 let courseGrade = {
   name: "courseGrade",
@@ -128,7 +127,7 @@ let courseGrade = {
 };
 let courseGradeText = {
   name: "courseGradeText",
-  value: ["current grade: ", "final grade: ", "final exam weight: ", "eg: 88.4", "eg: 94.5", "eg: 15"]
+  value: ["current grade: ", "final grade: ", "final exam weight: ", "currGrade eg: 88.4", "finalGrade eg: 94.5", "finalWeight eg: 15"]
 }
 let gpaImpact = {
   name: "gpaImpact",
@@ -136,7 +135,7 @@ let gpaImpact = {
 }
 let gpaImpactText = {
   name: "gpaImpactText",
-  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "eg: 3.5", "eg: 30", "eg: A- or 3.3", "eg: 3"]
+  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "currGPA eg: 3.5", "compCreds eg: 30", "newGrade eg: A- or 3.3", "newCreds eg: 3"]
 }
 
 let mode = reqGrade;
