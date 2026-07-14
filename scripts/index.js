@@ -83,7 +83,7 @@ function createAbout(arrName) {
   } else if (arrName == "gpaImpact") {
     abouts[0].innerHTML = "gpa impact calculator: calculates your new gpa and overall gpa impact after taking a new course";
   } else if (arrName == "finalSlider") {
-    abouts[0].innerHTML = "what if? this tool visualizes the max/min course grade you can get for different final exam scores ";
+    abouts[0].innerHTML = "what if? grade visuzalizer: graphs the max/min course grade you can get for different final exam scores ";
   }
 }
 
@@ -122,13 +122,6 @@ function createEnter() {
   enterInput.textContent = "submit";
   enterInput.id = "enterButton";
   enters[0].appendChild(enterInput);
-}
-
-function updateChart(currG, finalW) {
-  for (let i = 0; i < 111; i+=1) {
-    chart.options.data[0].dataPoints[i].y = calcCourseGrade(currG, i, finalW);
-  }
-  chart.render(); 
 }
 
 function createChart(currG, finalW) {
@@ -177,8 +170,7 @@ function createChart(currG, finalW) {
       content: "final exam score: {x}%, course grade: {y}",
     }, 
     interactivityEnabled: true, 
-    showTooltips: true, 
-    titleWrap: true,
+    titleWrap: true, 
   }); 
 
   for (let i = 0; i < 111; i+=1) {
@@ -188,6 +180,13 @@ function createChart(currG, finalW) {
       x: xVal,
       y: yVal
     });
+  }
+  chart.render();
+}
+
+function updateChart(currG, finalW) {
+  for (let i = 0; i < 111; i += 1) {
+    chart.options.data[0].dataPoints[i].y = calcCourseGrade(currG, i, finalW);
   }
   chart.render();
 }
@@ -226,7 +225,7 @@ let finalSlider = {
 }
 let finalSliderText = {
   name: "finalSliderText",
-  value: ["current grade: ", "final weight: ", "currGrade eg: 88.5", "finalWeight eg: 15"]
+  value: ["current grade: ", "final weight: ", "currGrade default: 90", "finalWeight default: 15"]
 }
 
 let chart; 
