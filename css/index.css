@@ -15,7 +15,7 @@
 }
 
 * {
-  /* outline: 2px black solid;  */
+  outline: 2px black solid; 
   font-family: "courier new"; 
 }
 
@@ -149,7 +149,7 @@
   outline-color: pink;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   
   width: var(--def-width-1);

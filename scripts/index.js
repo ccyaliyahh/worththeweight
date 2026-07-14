@@ -43,12 +43,12 @@ function createScreen(array, array2) {
 }
 
 function clearScreen() {
+  const enters = document.getElementsByClassName("enter");
+  enters[0].removeChild(enters[0].firstChild);
   const inputs = document.getElementsByClassName("inputs");
   while (inputs[0].firstChild) {
     inputs[0].removeChild(inputs[0].firstChild);
   }
-  const enters = document.getElementsByClassName("enter");
-  enters[0].removeChild(enters[0].firstChild);
 }
 
 function createAbout(arrName) {
@@ -62,12 +62,13 @@ function createAbout(arrName) {
       options[i].classList.add("inactive");
     }
   }
+  const abouts = document.getElementsByClassName("about");
   if (arrName == "reqGrade") {
-    const abouts = document.getElementsByClassName("about");
-    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll need to get desired class grade!!";
+    abouts[0].innerHTML = "final grade calculator: calculates what final exam grade you'll need to get desired class grade";
   } else if (arrName == "courseGrade") {
-    const abouts = document.getElementsByClassName("about");
-    abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final!!";
+    abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final";
+  } else if (arrName == "gpaImpact") {
+    abouts[0].innerHTML = "gpa impact calculator: calculates your new gpa and overall gpa impact after taking a new class";
   }
 }
 
@@ -107,6 +108,12 @@ function createEnter() {
   enterInput.id = "enterButton";
   enters[0].appendChild(enterInput);
 }
+
+//TO-DO:
+//add example inputs to input placeholders
+//add range restrictions to inputs {no empty, no zero, 0-100, A-F, etc}
+//add gpa impact text, {moderate positive impact, high negative impact, etc} 
+//maybe: make so that inputs are the same width (must somehow get width of text + param + gap)
 
 //START 
 let reqGrade = {
