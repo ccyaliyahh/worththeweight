@@ -180,3 +180,9 @@
 .enter .enterParam:hover {
   background-color: var(--option-color-active);
 }
+
+#chartContainer {
+  height: 400px;
+  width: 90%;
+  margin: auto;
+}

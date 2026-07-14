@@ -36,15 +36,27 @@ function calcGpaImpact(currGPA, compCreds, newGrade, newCreds) {
 }
 
 function createScreen(array, array2) {
-  clearScreen();
-  createAbout(array.name);
-  createInputs(array.value, array2.value);
-  createEnter();
+  if (array.name == "finalSlider") {
+    console.log("FINAL"); 
+    clearScreen();
+    createAbout(array.name);
+    createInputs(array.value, array2.value);
+    //createSlider(); 
+    createChart(); 
+  } else {
+    console.log("nope!");
+    clearScreen();
+    createAbout(array.name);
+    createInputs(array.value, array2.value);
+    createEnter();
+  }
 }
 
 function clearScreen() {
-  const enters = document.getElementsByClassName("enter");
-  enters[0].removeChild(enters[0].firstChild);
+  const charts = document.querySelectorAll(".charts");
+  charts.forEach(elem => elem.remove());
+  const enterParams = document.querySelectorAll(".enterParam");
+  enterParams.forEach(elem => elem.remove());
   const inputs = document.getElementsByClassName("inputs");
   while (inputs[0].firstChild) {
     inputs[0].removeChild(inputs[0].firstChild);
@@ -69,6 +81,8 @@ function createAbout(arrName) {
     abouts[0].innerHTML = "course grade calculator: calculates your overall class grade after you've taken the final";
   } else if (arrName == "gpaImpact") {
     abouts[0].innerHTML = "gpa impact calculator: calculates your new gpa and overall gpa impact after taking a new class";
+  } else if (arrName == "finalSlider") {
+    abouts[0].innerHTML = "what if? this tool visualizes the max/min course grade you can get for different final grade inputs. ";
   }
 }
 
@@ -109,6 +123,30 @@ function createEnter() {
   enters[0].appendChild(enterInput);
 }
 
+function createChart() {
+  
+  const chartDiv = document.createElement("div");
+  chartDiv.classList.add("charts");
+  chartDiv.id = "chartContainer";
+  const mains = document.getElementsByClassName("main");
+  mains[0].appendChild(chartDiv);
+
+  let dPs = [];
+  let xVal = 0;
+
+  let chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: false,
+    theme: "light2",
+    title: { text: "Live Updating Line Chart" },
+    axisX: { title: "Time (s)" },
+    axisY: { title: "Value", includeZero: false },
+    data: [{
+      type: "line",
+      dataPoints: dPs
+    }]
+  });
+}
+
 //TO-DO: 
 //maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
 
@@ -119,7 +157,7 @@ let reqGrade = {
 };
 let reqGradeText = {
   name: "reqGradeText",
-  value: ["current grade: ", "target grade: ", "final exam weight: ", "currGrade eg: 88.4", "targetGrade eg: 90", "finalWeight eg: 15"]
+  value: ["current grade: ", "target grade: ", "final exam weight: ", "currGrade eg: 88.5", "targetGrade eg: 90", "finalWeight eg: 15"]
 }
 let courseGrade = {
   name: "courseGrade",
@@ -127,7 +165,7 @@ let courseGrade = {
 };
 let courseGradeText = {
   name: "courseGradeText",
-  value: ["current grade: ", "final grade: ", "final exam weight: ", "currGrade eg: 88.4", "finalGrade eg: 94.5", "finalWeight eg: 15"]
+  value: ["current grade: ", "final grade: ", "final exam weight: ", "currGrade eg: 88.5", "finalGrade eg: 95", "finalWeight eg: 15"]
 }
 let gpaImpact = {
   name: "gpaImpact",
@@ -136,6 +174,14 @@ let gpaImpact = {
 let gpaImpactText = {
   name: "gpaImpactText",
   value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "currGPA eg: 3.5", "compCreds eg: 30", "newGrade eg: A- or 3.3", "newCreds eg: 3"]
+}
+let finalSlider = {
+  name: "finalSlider",
+  value: ["currGrade", "finalWeight"]
+}
+let finalSliderText = {
+  name: "finalSliderText",
+  value: ["current grade: ", "final weight: ", "currGrade eg: 88.5", "finalWeight eg: 15"]
 }
 
 let mode = reqGrade;
@@ -161,6 +207,13 @@ gpaImpactButton.addEventListener("click", () => {
   mode = gpaImpact;
   mode2 = gpaImpactText;
   createScreen(gpaImpact, gpaImpactText);
+});
+
+const finalSliderButton = document.getElementById("finalSlider");
+finalSliderButton.addEventListener("click", () => {
+  mode = finalSlider;
+  mode2 = finalSliderText;
+  createScreen(finalSlider, finalSliderText);
 });
 
 const enters = document.getElementsByClassName("enter");
