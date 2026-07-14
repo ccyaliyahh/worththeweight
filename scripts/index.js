@@ -109,11 +109,10 @@ function createEnter() {
   enters[0].appendChild(enterInput);
 }
 
-//TO-DO:
-//add example inputs to input placeholders
-//add range restrictions to inputs {no empty, no zero, 0-100, A-F, etc}
-//add gpa impact text, {moderate positive impact, high negative impact, etc} 
-//maybe: make so that inputs are the same width (must somehow get width of text + param + gap)
+//TO-DO: 
+//add example inputs to input placeholders 
+//add range restrictions to inputs {no empty, no zero, 0-100, A-F, etc} 
+//maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
 
 //START 
 let reqGrade = {
@@ -182,6 +181,23 @@ function displayResult(mode) {
     alert("you will have a " + text + " in the class!");
   } else if (mode.name == "gpaImpact") {
     const { newGPA: newGPA, gpaImpact: gpaImpact } = calcGpaImpact(form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value);
-    alert("your gpa changed by " + gpaImpact + " and is now " + newGPA + "!");
+    let text; 
+    if (gpaImpact < 0) {
+      text = " negative "; 
+    } else if (gpaImpact > 0) {
+      text = " positive "; 
+    } else {
+      text = " "; 
+    } 
+    if (Math.abs(gpaImpact) >= 0.100) {
+      text = "high" + text + "impact";
+    } else if (Math.abs(gpaImpact) >= 0.050) {
+      text = "moderate" + text + "impact";
+    } else if (Math.abs(gpaImpact) >= 0.010) {
+      text = "slight" + text + "impact";
+    } else {
+      text = "negligible" + text + "impact";
+    }
+    alert("new gpa: " + newGPA + "\nchanges gpa by  " + gpaImpact + "  – " + text);
   }
 }
