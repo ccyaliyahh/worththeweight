@@ -72,6 +72,10 @@
   text-align: center;
 }
 
+.options .option:hover {
+  background-color: var(--option-color-active);
+}
+
 .calculator {
   outline-color: blue;
   
@@ -117,15 +121,16 @@
 
   display: flex;
   align-items: center;
-  justify-content: center;
 
   width: var(--def-width-1);
-  height: calc(calc(0.25*var(--main-height))/3);
+  height: auto; 
   gap: calc(0.03*var(--main-height));
 }
 
 .inputText {
   outline-color: blue; 
+
+  margin-left: calc(0.05*var(--def-width-1)); 
   
   color: black;
   font-size: 27px;
@@ -134,7 +139,7 @@
 }
 
 .inputParam {
-  outline-color: red;
+  outline-color: var(--option-color);
 
   width: calc(0.25*var(--main-width));
   height: calc(0.05*var(--main-height));
@@ -155,7 +160,23 @@
 
 .enterParam {
   outline-color: red;
+  background-color: var(--option-color);
+  border-radius: 20px;
+  border: none; 
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   width: calc(0.25*var(--main-width));
   height: calc(0.09*var(--main-height));
+
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.enter .enterParam:hover {
+  background-color: var(--option-color-active);
 }
