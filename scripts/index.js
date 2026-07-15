@@ -119,7 +119,7 @@ function createInputs(arrVal, arrVal2) {
     const slider = document.createElement("input");
     slider.classList.add("inputParam");
     slider.type = "range";
-    slider.min = "0";
+    slider.min = "000";
     slider.max = "110";
     slider.value = "50";
     slider.id = "tooltipSlider";
@@ -128,9 +128,24 @@ function createInputs(arrVal, arrVal2) {
     sliderValue.classList.add("inputText");
     sliderValue.id = "sliderValue";
     sliderValue.textContent = slider.value; 
+    sliderValue.style.color = "var(--option-color-active)"; 
+
+    const sliderMin = document.createElement("span");
+    sliderMin.classList.add("inputText");
+    sliderMin.id = "sliderMin";
+    sliderMin.textContent = slider.min; 
+    sliderMin.style.marginLeft = "3.30vw"; 
+
+    const sliderMax = document.createElement("span");
+    sliderMax.classList.add("inputText");
+    sliderMax.id = "sliderMax";
+    sliderMax.textContent = slider.max; 
+    sliderMax.style.marginLeft = "0"; 
 
     sliderContainer.appendChild(sliderValue);
+    sliderContainer.appendChild(sliderMin);
     sliderContainer.appendChild(slider);
+    sliderContainer.appendChild(sliderMax);
     inputForm.appendChild(sliderContainer);
   }
   inputs[0].appendChild(inputForm);
@@ -144,7 +159,7 @@ function createEnter() {
   enterInput.id = "enterButton";
   enters[0].appendChild(enterInput);
 }
-      
+
 function createChart(currG, finalW) {
   const chartDiv = document.createElement("div");
   chartDiv.classList.add("charts");
@@ -189,11 +204,6 @@ function createChart(currG, finalW) {
       borderColor: "white", 
       cornerRadius: 2, 
       content: "final exam score: {x}%, course grade: {y}",
-      // content: function(e) {
-      //   let xVal = dPs[selectedI].x; 
-      //   let yVal = dPs[selectedI].y; 
-      //   return "final exam score: { " + xVal + " }%, course grade: { " + yVal + " }";
-      // }
     }, 
     interactivityEnabled: true, 
     showTooltip: true, 
@@ -213,6 +223,7 @@ function createChart(currG, finalW) {
 
 function updateChart(currG, finalW) {
   for (let i = 0; i < 111; i += 1) {
+    chart.options.data[0].dataPoints[i].y = [];
     chart.options.data[0].dataPoints[i].y = calcCourseGrade(currG, i, finalW);
   }
   chart.render();
@@ -308,25 +319,35 @@ inputs[0].addEventListener("click", function (e) {
     const sliderValue = document.getElementById("sliderValue");
     slider.addEventListener("input", function () {
       selectedI = this.value;
-      sliderValue.textContent = selectedI;
+      let text = selectedI;
+      if (text.charAt(1) == "" && text.charAt(2) == "") {
+        text = "00" + text;
+      } else if (text.charAt(2) == ""){
+        text = "0" + text;
+      }
+      sliderValue.textContent = text;
       clearToolTip(); 
-      showToolTip();
+      createToolTip();
       chart.render();
     });
   }
 });
 
-function showToolTip() {
+function createToolTip() {
   const tooltipDiv = document.createElement("div");
   tooltipDiv.className = "tooltip"; 
   tooltipDiv.id = "customTooltip"; 
   const triangle = document.createElement("div");
   triangle.className = "tooltip";
   triangle.id = "triangle"; 
+  const dot = document.createElement("div");
+  dot.className = "tooltip";
+  dot.id = "dot"; 
 
   const mains = document.getElementsByClassName("main"); 
   mains[0].appendChild(tooltipDiv); 
   mains[0].appendChild(triangle); 
+  mains[0].appendChild(dot); 
   
   const dp = dPs[selectedI];
   const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
@@ -339,6 +360,9 @@ function showToolTip() {
   triangle.style.display = "block";
   triangle.style.left = (pixelX + chartRect.left - triangle.offsetWidth / 2) + "px";
   triangle.style.top = (pixelY + 560 - 25) + "px";
+  dot.style.display = "block";
+  dot.style.left = (pixelX + chartRect.left - dot.offsetWidth / 2) + "px";
+  dot.style.top = (pixelY + 560 - 1) + "px";
 }
 
 function clearToolTip() {

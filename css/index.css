@@ -196,7 +196,7 @@
 }
 
 #customTooltip {
-  background: var(--option-color);
+  background: rgb(174, 197, 243);
   border-radius: 20px;
 
   position: absolute;
@@ -227,5 +227,28 @@
   
   width: 0;
   height: 0;
-  z-index: 100;
+  z-index: 10;
+}
+
+#dot {
+  background: var(--option-color-active);
+  border-radius: 50%;
+
+  position: absolute;
+  display: none;
+
+  width: calc(0.02*var(--def-width-1));
+  height: calc(0.02*var(--def-width-1));
+  pointer-events: none;
+  z-index: 15;
+}
+
+#tooltipSlider {
+  -webkit-appearance: none;
+  background: linear-gradient(to right, var(--option-color), var(--option-color-active));
+  border-radius: 5px;
+  outline: none;
+  margin: 20px 0;
+  width: calc(var(--def-width-1) / 2);
+  height: calc(0.02 * var(--main-height));
 }
