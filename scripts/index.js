@@ -70,12 +70,12 @@ let finalSliderText = {
 
 let chart;
 let isChart = false; 
-let selectedI = 0;
+let selectedI = 50;
 let dPs = []; 
 
 let mode = reqGrade;
 let mode2 = reqGradeText;
-createScreen(mode, mode2);
+createScreen(mode, mode2); 
 
 function createScreen(array, array2) {
   clearScreen(); 
@@ -155,7 +155,7 @@ function createInputs(arrVal, arrVal2) {
     inputs[0].appendChild(inputForm);
     inputDivInput.style.width = returnEvenWidth(inputDiv, inputDivText, inputDivInput); 
   }
-  if (mode.name == "finalSlider") {
+  if (mode.name == "finalSlider") { //create inputs before create chart
     const sliderContainer = document.createElement("div");
     sliderContainer.classList.add("input");
     sliderContainer.id = "sliderContainer"; 
@@ -165,13 +165,13 @@ function createInputs(arrVal, arrVal2) {
     slider.type = "range";
     slider.min = "000";
     slider.max = "110";
-    slider.value = "50";
+    slider.value = "050";
     slider.id = "slider";
 
     const sliderValue = document.createElement("span");
     sliderValue.classList.add("inputText");
     sliderValue.id = "sliderValue";
-    sliderValue.textContent = slider.value; 
+    sliderValue.textContent = "050"; 
     sliderValue.style.color = "var(--option-color-active)"; 
 
     const sliderMin = document.createElement("span");
@@ -334,6 +334,7 @@ function createChart(currG, finalW) {
     });
   }
   chart.render();
+  createToolTip(); 
 }
 
 function updateChart(currG, finalW) {
@@ -389,7 +390,7 @@ function clearToolTip() {
 // TO-DO: 
 // add graphic for header 
 // maybe: add info button to explain each formula 
-// maybe: make so that first input of the slider can actually work 
+// maybe: make so first input of slider actually fires 
 
 const reqGradeButton = document.getElementById("reqGrade");
 reqGradeButton.addEventListener("click", () => {
@@ -426,11 +427,11 @@ enters[0].addEventListener("click", (event) => {
 });
 
 const inputs = document.getElementsByClassName("inputs"); 
-inputs[0].addEventListener("click", function (e) {
+inputs[0].addEventListener("input", function (e) {
   if (e.target && e.target.id === "slider") {
     const sliderContainer = document.getElementById("sliderContainer");
     const slider = document.getElementById("slider");
-    const sliderValue = document.getElementById("sliderValue");
+    const sliderValue = document.getElementById("sliderValue"); 
     slider.addEventListener("input", function () {
       selectedI = this.value;
       let text = selectedI;
