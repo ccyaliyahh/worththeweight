@@ -195,7 +195,7 @@
   justify-content: flex-start;
 }
 
-#customTooltip {
+#toolTip {
   background: rgb(174, 197, 243);
   border-radius: 20px;
 
@@ -217,7 +217,7 @@
   white-space: pre-wrap;
 }
 
-#triangle {
+#toolTipTri {
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 20px solid var(--option-color); 
@@ -230,7 +230,7 @@
   z-index: 10;
 }
 
-#dot {
+#toolTipDot {
   background: var(--option-color-active);
   border-radius: 50%;
 
@@ -243,7 +243,7 @@
   z-index: 15;
 }
 
-#tooltipSlider {
+#slider {
   -webkit-appearance: none;
   background: linear-gradient(to right, var(--option-color), var(--option-color-active));
   border-radius: 5px;

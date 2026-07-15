@@ -97,7 +97,7 @@ function clearScreen() {
   enterParams.forEach(elem => elem.remove());
   const charts = document.querySelectorAll(".charts");
   charts.forEach(elem => elem.remove());
-  const toolTips = document.querySelectorAll(".tooltip");
+  const toolTips = document.querySelectorAll(".toolTip");
   toolTips.forEach(elem => elem.remove());
   const inputs = document.getElementsByClassName("inputs");
   while (inputs[0].firstChild) {
@@ -158,7 +158,7 @@ function createInputs(arrVal, arrVal2) {
   if (mode.name == "finalSlider") {
     const sliderContainer = document.createElement("div");
     sliderContainer.classList.add("input");
-    sliderContainer.id = "sliderContainer";
+    sliderContainer.id = "sliderContainer"; 
 
     const slider = document.createElement("input");
     slider.classList.add("inputParam");
@@ -166,7 +166,7 @@ function createInputs(arrVal, arrVal2) {
     slider.min = "000";
     slider.max = "110";
     slider.value = "50";
-    slider.id = "tooltipSlider";
+    slider.id = "slider";
 
     const sliderValue = document.createElement("span");
     sliderValue.classList.add("inputText");
@@ -275,12 +275,12 @@ function generateGPAText(gpaImpact) {
 }
 
 function createChart(currG, finalW) {
-  const chartDiv = document.createElement("div");
-  chartDiv.classList.add("charts");
-  chartDiv.id = "chartContainer";
-  chartDiv.style = "height: var(--def-width-1); width: calc(1.1 * var(--def-width-2));"
+  const chartContainer = document.createElement("div");
+  chartContainer.classList.add("charts");
+  chartContainer.id = "chartContainer";
+  chartContainer.style = "height: var(--def-width-1); width: calc(1.1 * var(--def-width-2));"
   const mains = document.getElementsByClassName("main");
-  mains[0].appendChild(chartDiv);
+  mains[0].appendChild(chartContainer);
 
   let xVal = 0;
   let yVal = 0; 
@@ -348,18 +348,18 @@ function clearChart() {
 }
 
 function createToolTip() {
-  const tooltipDiv = document.createElement("div");
-  tooltipDiv.className = "tooltip";
-  tooltipDiv.id = "customTooltip";
+  const toolTip = document.createElement("div");
+  toolTip.className = "toolTip";
+  toolTip.id = "toolTip";
   const triangle = document.createElement("div");
-  triangle.className = "tooltip";
-  triangle.id = "triangle";
+  triangle.className = "toolTip";
+  triangle.id = "toolTipTri";
   const dot = document.createElement("div");
-  dot.className = "tooltip";
-  dot.id = "dot";
+  dot.className = "toolTip";
+  dot.id = "toolTipDot";
 
   const mains = document.getElementsByClassName("main");
-  mains[0].appendChild(tooltipDiv);
+  mains[0].appendChild(toolTip);
   mains[0].appendChild(triangle);
   mains[0].appendChild(dot);
 
@@ -367,10 +367,10 @@ function createToolTip() {
   const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
   const pixelY = chart.axisY[0].convertValueToPixel(dp.y);
   const chartRect = document.getElementById("chartContainer").getBoundingClientRect();
-  tooltipDiv.style.display = "block";
-  tooltipDiv.style.left = (pixelX + chartRect.left - tooltipDiv.offsetWidth / 2) + "px";
-  tooltipDiv.style.top = (pixelY + 560 - 107) + "px";
-  tooltipDiv.innerHTML = "final exam: " + (dp.x).toString() + " \nfinal grade: " + (dp.y).toString();
+  toolTip.style.display = "block";
+  toolTip.style.left = (pixelX + chartRect.left - toolTip.offsetWidth / 2) + "px";
+  toolTip.style.top = (pixelY + 560 - 107) + "px";
+  toolTip.innerHTML = "final exam: " + (dp.x).toString() + " \nfinal grade: " + (dp.y).toString();
   triangle.style.display = "block";
   triangle.style.left = (pixelX + chartRect.left - triangle.offsetWidth / 2) + "px";
   triangle.style.top = (pixelY + 560 - 42) + "px";
@@ -380,12 +380,12 @@ function createToolTip() {
 }
 
 function clearToolTip() {
-  const toolTips = document.querySelectorAll(".tooltip");
+  const toolTips = document.querySelectorAll(".toolTip");
   toolTips.forEach(elem => elem.remove());
 }
 
 // TO-DO: 
-// fix tooltip id/class names, add graphic for header 
+// update tooltip position when changing input vals, add graphic for header 
 // maybe: add info button to explain each formula 
 // maybe: make so that first input of the slider can actually work 
 
@@ -425,9 +425,9 @@ enters[0].addEventListener("click", (event) => {
 
 const inputs = document.getElementsByClassName("inputs"); 
 inputs[0].addEventListener("click", function (e) {
-  if (e.target && e.target.id === "tooltipSlider") {
+  if (e.target && e.target.id === "slider") {
     const sliderContainer = document.getElementById("sliderContainer");
-    const slider = document.getElementById("tooltipSlider");
+    const slider = document.getElementById("slider");
     const sliderValue = document.getElementById("sliderValue");
     slider.addEventListener("input", function () {
       selectedI = this.value;
