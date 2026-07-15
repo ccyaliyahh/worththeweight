@@ -42,7 +42,6 @@ function createScreen(array, array2) {
     clearScreen();
     createAbout(array.name);
     createInputs(array.value, array2.value);
-    //createSlider(); 
     createChart(90, 15); 
   } else {
     mains[0].style.height = "95vh"; 
@@ -111,8 +110,30 @@ function createInputs(arrVal, arrVal2) {
     inputDiv.appendChild(inputDivText);
     inputDiv.appendChild(inputDivInput);
     inputForm.appendChild(inputDiv);
-    inputs[0].appendChild(inputForm);
   }
+  if (mode.name == "finalSlider") {
+    const sliderContainer = document.createElement("div");
+    sliderContainer.classList.add("input");
+    sliderContainer.id = "sliderContainer";
+
+    const slider = document.createElement("input");
+    slider.classList.add("inputParam");
+    slider.type = "range";
+    slider.min = "0";
+    slider.max = "110";
+    slider.value = "50";
+    slider.id = "tooltipSlider";
+
+    const sliderValue = document.createElement("span");
+    sliderValue.classList.add("inputText");
+    sliderValue.id = "sliderValue";
+    sliderValue.textContent = slider.value; 
+
+    sliderContainer.appendChild(sliderValue);
+    sliderContainer.appendChild(slider);
+    inputForm.appendChild(sliderContainer);
+  }
+  inputs[0].appendChild(inputForm);
 }
 
 function createEnter() {
@@ -123,7 +144,7 @@ function createEnter() {
   enterInput.id = "enterButton";
   enters[0].appendChild(enterInput);
 }
-
+      
 function createChart(currG, finalW) {
   const chartDiv = document.createElement("div");
   chartDiv.classList.add("charts");
@@ -132,7 +153,6 @@ function createChart(currG, finalW) {
   const mains = document.getElementsByClassName("main");
   mains[0].appendChild(chartDiv);
 
-  let dPs = [];
   let xVal = 0;
   let yVal = 0; 
   chart = new CanvasJS.Chart("chartContainer", {
@@ -160,6 +180,7 @@ function createChart(currG, finalW) {
       dataPoints: dPs, 
     }], 
     toolTip: {
+      shared: false, 
       fontColor: "black", 
       fontWeight: "bold", 
       fontFamily: "courier new", 
@@ -168,8 +189,14 @@ function createChart(currG, finalW) {
       borderColor: "white", 
       cornerRadius: 2, 
       content: "final exam score: {x}%, course grade: {y}",
+      // content: function(e) {
+      //   let xVal = dPs[selectedI].x; 
+      //   let yVal = dPs[selectedI].y; 
+      //   return "final exam score: { " + xVal + " }%, course grade: { " + yVal + " }";
+      // }
     }, 
     interactivityEnabled: true, 
+    showTooltip: true, 
     titleWrap: true, 
   }); 
 
@@ -228,10 +255,13 @@ let finalSliderText = {
   value: ["current grade: ", "final weight: ", "currGrade default: 90", "finalWeight default: 15"]
 }
 
-let chart; 
 let mode = reqGrade;
 let mode2 = reqGradeText;
 createScreen(mode, mode2);
+
+let chart;
+let selectedI = 0;
+let dPs = []; 
 
 const reqGradeButton = document.getElementById("reqGrade");
 reqGradeButton.addEventListener("click", () => {
@@ -268,6 +298,45 @@ enters[0].addEventListener("click", (event) => {
     displayResult(mode); 
   }
 });
+
+const inputs = document.getElementsByClassName("inputs"); 
+inputs[0].addEventListener("click", function (e) {
+  if (e.target && e.target.id === "tooltipSlider") {
+    const sliderContainer = document.getElementById("sliderContainer");
+    const slider = document.getElementById("tooltipSlider");
+    const sliderValue = document.getElementById("sliderValue");
+    slider.addEventListener("input", function () {
+      selectedI = this.value;
+      sliderValue.textContent = selectedI;
+      clearToolTip(); 
+      showToolTip();
+      chart.render();
+    });
+  }
+});
+
+function showToolTip() {
+  const tooltipDiv = document.createElement("div");
+  tooltipDiv.className = "tooltip"; 
+  tooltipDiv.id = "customTooltip"; 
+  const mains = document.getElementsByClassName("main"); 
+  mains[0].appendChild(tooltipDiv); 
+  
+  const dp = dPs[selectedI];
+  const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
+  const pixelY = chart.axisY[0].convertValueToPixel(dp.y);
+  const chartRect = document.getElementById("chartContainer").getBoundingClientRect();
+  console.log(chartRect.top); 
+  tooltipDiv.style.display = "block";
+  tooltipDiv.style.left = (pixelX + chartRect.left - tooltipDiv.offsetWidth / 2) + "px";
+  tooltipDiv.style.top = (pixelY + 560 - 30) + "px";
+}
+
+function clearToolTip() {
+  console.log("clear"); 
+  const toolTips = document.querySelectorAll(".tooltip");
+  toolTips.forEach(elem => elem.remove());
+}
 
 document.addEventListener("change", function (e) {
   const target = e.target.closest("#currGrade"); 
