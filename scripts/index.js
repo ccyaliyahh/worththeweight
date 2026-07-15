@@ -35,28 +35,70 @@ function calcGpaImpact(currGPA, compCreds, newGrade, newCreds) {
   return { newGPA, gpaImpact };
 }
 
+let reqGrade = {
+  name: "reqGrade",
+  value: ["currGrade", "targetGrade", "finalWeight"]
+};
+let reqGradeText = {
+  name: "reqGradeText",
+  value: ["current grade: ", "target grade: ", "final exam weight: ", "currGrade eg: 88.5", "targetGrade eg: 90", "finalWeight eg: 15"]
+}
+let courseGrade = {
+  name: "courseGrade",
+  value: ["currGrade", "finalGrade", "finalWeight"]
+};
+let courseGradeText = {
+  name: "courseGradeText",
+  value: ["current grade: ", "final grade: ", "final exam weight: ", "currGrade eg: 88.5", "finalGrade eg: 95", "finalWeight eg: 15"]
+}
+let gpaImpact = {
+  name: "gpaImpact",
+  value: ["currGPA", "compCreds", "newGrade", "newCreds"]
+}
+let gpaImpactText = {
+  name: "gpaImpactText",
+  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "currGPA eg: 3.5", "compCreds eg: 30", "newGrade eg: A- or 3.3", "newCreds eg: 3"]
+}
+let finalSlider = {
+  name: "finalSlider",
+  value: ["currGrade", "finalWeight"]
+}
+let finalSliderText = {
+  name: "finalSliderText",
+  value: ["current grade: ", "final weight: ", "currGrade default: 90", "finalWeight default: 15"]
+}
+
+let chart;
+let isChart = false; 
+let selectedI = 0;
+let dPs = []; 
+
+let mode = reqGrade;
+let mode2 = reqGradeText;
+createScreen(mode, mode2);
+
 function createScreen(array, array2) {
+  clearScreen(); 
   const mains = document.getElementsByClassName("main");
+  createAbout(array.name);
+  createInputs(array.value, array2.value);
   if (array.name == "finalSlider") {
     mains[0].style.height = "154.75vh"; //95+55+4.75
-    clearScreen();
-    createAbout(array.name);
-    createInputs(array.value, array2.value);
     createChart(90, 15); 
   } else {
     mains[0].style.height = "95vh"; 
-    clearScreen();
-    createAbout(array.name);
-    createInputs(array.value, array2.value);
     createEnter();
   }
 }
 
 function clearScreen() {
-  const charts = document.querySelectorAll(".charts");
-  charts.forEach(elem => elem.remove());
+  if (isChart) { clearChart(); }
   const enterParams = document.querySelectorAll(".enterParam");
   enterParams.forEach(elem => elem.remove());
+  const charts = document.querySelectorAll(".charts");
+  charts.forEach(elem => elem.remove());
+  const toolTips = document.querySelectorAll(".tooltip");
+  toolTips.forEach(elem => elem.remove());
   const inputs = document.getElementsByClassName("inputs");
   while (inputs[0].firstChild) {
     inputs[0].removeChild(inputs[0].firstChild);
@@ -160,6 +202,65 @@ function createEnter() {
   enters[0].appendChild(enterInput);
 }
 
+function checkInputs() {
+  const form = document.getElementById("form");
+  for (let i = 0; i < form.length; i++) {
+    let id = form.elements[i].id;
+    let stringVal = form.elements[i].value;
+    let intVal = parseInt(form.elements[i].value);
+    if (stringVal == "" || intVal < 0) {
+      alert("please enter a non-negative value for " + id);
+      return false;
+    } else if (id != "newGrade" && !intVal) {
+      alert("please enter a numerical value for " + id);
+      return false;
+    } else if (id != "compCreds" && intVal > 100) {
+      alert("please enter a value between 0 - 100 for " + id);
+      return false;
+    } else if (id == "newGrade" && !intVal && (stringVal.charCodeAt(0) < 65 || stringVal.charCodeAt(0) > 70 || stringVal.charCodeAt(0) == 69)) {
+      alert("please enter a numerical value between 0 - 100 or a valid grade letter for " + id);
+      return false;
+    }
+  }
+  return true;
+}
+
+function displayResult(mode) {
+  const form = document.getElementById("form");
+  if (mode.name == "reqGrade") {
+    text = calcReqGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
+    alert("you will need at least a " + text + "% to get a " + form.elements[1].value + " in the class!");
+  } else if (mode.name == "courseGrade") {
+    text = calcCourseGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
+    alert("you will have a " + text + " in the class!");
+  } else if (mode.name == "gpaImpact") {
+    const { newGPA: newGPA, gpaImpact: gpaImpact } = calcGpaImpact(form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value);
+    text = generateGPAText(gpaImpact);
+    alert("new gpa: " + newGPA + "\nchanges gpa by  " + gpaImpact + "  – " + text);
+  }
+}
+
+function generateGPAText(gpaImpact) {
+  let text;
+  if (gpaImpact < 0) {
+    text = " negative ";
+  } else if (gpaImpact > 0) {
+    text = " positive ";
+  } else {
+    text = " ";
+  }
+  if (Math.abs(gpaImpact) >= 0.100) {
+    text = "high" + text + "impact";
+  } else if (Math.abs(gpaImpact) >= 0.050) {
+    text = "moderate" + text + "impact";
+  } else if (Math.abs(gpaImpact) >= 0.010) {
+    text = "slight" + text + "impact";
+  } else {
+    text = "negligible" + text + "impact";
+  }
+  return text;
+}
+
 function createChart(currG, finalW) {
   const chartDiv = document.createElement("div");
   chartDiv.classList.add("charts");
@@ -171,6 +272,9 @@ function createChart(currG, finalW) {
   let xVal = 0;
   let yVal = 0; 
   chart = new CanvasJS.Chart("chartContainer", {
+    interactivityEnabled: true,
+    showTooltip: true,
+    titleWrap: true, 
     title: { 
       text: "so what if?", 
       fontColor: "rgb(125, 155, 215)", 
@@ -205,10 +309,8 @@ function createChart(currG, finalW) {
       cornerRadius: 2, 
       content: "final exam score: {x}%, course grade: {y}",
     }, 
-    interactivityEnabled: true, 
-    showTooltip: true, 
-    titleWrap: true, 
   }); 
+  isChart = true; 
 
   for (let i = 0; i < 111; i+=1) {
     xVal = i; 
@@ -222,58 +324,56 @@ function createChart(currG, finalW) {
 }
 
 function updateChart(currG, finalW) {
-  for (let i = 0; i < 111; i += 1) {
-    chart.options.data[0].dataPoints[i].y = [];
-    chart.options.data[0].dataPoints[i].y = calcCourseGrade(currG, i, finalW);
-  }
+  clearChart(); 
+  let points = chart.options.data[0].dataPoints; 
+  for (let i = 0; i < 111; i += 1) { points.push({ x: i, y: calcCourseGrade(currG, i, finalW) }); }
   chart.render();
+}
+
+function clearChart() {
+  for (let i = 0; i < 111; i += 1) { chart.options.data[0].dataPoints.shift(); }
+}
+
+function createToolTip() {
+  const tooltipDiv = document.createElement("div");
+  tooltipDiv.className = "tooltip";
+  tooltipDiv.id = "customTooltip";
+  const triangle = document.createElement("div");
+  triangle.className = "tooltip";
+  triangle.id = "triangle";
+  const dot = document.createElement("div");
+  dot.className = "tooltip";
+  dot.id = "dot";
+
+  const mains = document.getElementsByClassName("main");
+  mains[0].appendChild(tooltipDiv);
+  mains[0].appendChild(triangle);
+  mains[0].appendChild(dot);
+
+  const dp = dPs[selectedI];
+  const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
+  const pixelY = chart.axisY[0].convertValueToPixel(dp.y);
+  const chartRect = document.getElementById("chartContainer").getBoundingClientRect();
+  tooltipDiv.style.display = "block";
+  tooltipDiv.style.left = (pixelX + chartRect.left - tooltipDiv.offsetWidth / 2) + "px";
+  tooltipDiv.style.top = (pixelY + 560 - 90) + "px";
+  tooltipDiv.innerHTML = "final exam: " + (dp.x).toString() + " \nfinal grade: " + (dp.y).toString();
+  triangle.style.display = "block";
+  triangle.style.left = (pixelX + chartRect.left - triangle.offsetWidth / 2) + "px";
+  triangle.style.top = (pixelY + 560 - 25) + "px";
+  dot.style.display = "block";
+  dot.style.left = (pixelX + chartRect.left - dot.offsetWidth / 2) + "px";
+  dot.style.top = (pixelY + 560 - 1) + "px";
+}
+
+function clearToolTip() {
+  const toolTips = document.querySelectorAll(".tooltip");
+  toolTips.forEach(elem => elem.remove());
 }
 
 //TO-DO: 
 //maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
 //maybe: make so that first input of the slider can actually work 
-
-//START 
-let reqGrade = {
-  name: "reqGrade",
-  value: ["currGrade", "targetGrade", "finalWeight"]
-};
-let reqGradeText = {
-  name: "reqGradeText",
-  value: ["current grade: ", "target grade: ", "final exam weight: ", "currGrade eg: 88.5", "targetGrade eg: 90", "finalWeight eg: 15"]
-}
-let courseGrade = {
-  name: "courseGrade",
-  value: ["currGrade", "finalGrade", "finalWeight"]
-};
-let courseGradeText = {
-  name: "courseGradeText",
-  value: ["current grade: ", "final grade: ", "final exam weight: ", "currGrade eg: 88.5", "finalGrade eg: 95", "finalWeight eg: 15"]
-}
-let gpaImpact = {
-  name: "gpaImpact",
-  value: ["currGPA", "compCreds", "newGrade", "newCreds"]
-}
-let gpaImpactText = {
-  name: "gpaImpactText",
-  value: ["current gpa: ", "completed credits: ", "new grade: ", "new credits: ", "currGPA eg: 3.5", "compCreds eg: 30", "newGrade eg: A- or 3.3", "newCreds eg: 3"]
-}
-let finalSlider = {
-  name: "finalSlider",
-  value: ["currGrade", "finalWeight"]
-}
-let finalSliderText = {
-  name: "finalSliderText",
-  value: ["current grade: ", "final weight: ", "currGrade default: 90", "finalWeight default: 15"]
-}
-
-let mode = reqGrade;
-let mode2 = reqGradeText;
-createScreen(mode, mode2);
-
-let chart;
-let selectedI = 0;
-let dPs = []; 
 
 const reqGradeButton = document.getElementById("reqGrade");
 reqGradeButton.addEventListener("click", () => {
@@ -306,9 +406,7 @@ finalSliderButton.addEventListener("click", () => {
 const enters = document.getElementsByClassName("enter");
 enters[0].addEventListener("click", (event) => {
   const enterButton = event.target.closest(".enterParam");
-  if (enterButton && checkInputs()) { 
-    displayResult(mode); 
-  }
+  if (enterButton && checkInputs()) { displayResult(mode); }
 });
 
 const inputs = document.getElementsByClassName("inputs"); 
@@ -333,51 +431,12 @@ inputs[0].addEventListener("click", function (e) {
   }
 });
 
-function createToolTip() {
-  const tooltipDiv = document.createElement("div");
-  tooltipDiv.className = "tooltip"; 
-  tooltipDiv.id = "customTooltip"; 
-  const triangle = document.createElement("div");
-  triangle.className = "tooltip";
-  triangle.id = "triangle"; 
-  const dot = document.createElement("div");
-  dot.className = "tooltip";
-  dot.id = "dot"; 
-
-  const mains = document.getElementsByClassName("main"); 
-  mains[0].appendChild(tooltipDiv); 
-  mains[0].appendChild(triangle); 
-  mains[0].appendChild(dot); 
-  
-  const dp = dPs[selectedI];
-  const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
-  const pixelY = chart.axisY[0].convertValueToPixel(dp.y);
-  const chartRect = document.getElementById("chartContainer").getBoundingClientRect();
-  tooltipDiv.style.display = "block";
-  tooltipDiv.style.left = (pixelX + chartRect.left - tooltipDiv.offsetWidth / 2) + "px";
-  tooltipDiv.style.top = (pixelY + 560 - 90) + "px";
-  tooltipDiv.innerHTML = "final exam: " + (dp.x).toString() + " \nfinal grade: " + (dp.y).toString(); 
-  triangle.style.display = "block";
-  triangle.style.left = (pixelX + chartRect.left - triangle.offsetWidth / 2) + "px";
-  triangle.style.top = (pixelY + 560 - 25) + "px";
-  dot.style.display = "block";
-  dot.style.left = (pixelX + chartRect.left - dot.offsetWidth / 2) + "px";
-  dot.style.top = (pixelY + 560 - 1) + "px";
-}
-
-function clearToolTip() {
-  const toolTips = document.querySelectorAll(".tooltip");
-  toolTips.forEach(elem => elem.remove());
-}
-
 document.addEventListener("change", function (e) {
   const target = e.target.closest("#currGrade"); 
   if (target && mode.name == "finalSlider") {
     if (form.elements[1].value == "") {
-      console.log("no 2nd val"); 
       updateChart(parseInt(form.elements[0].value), 15);
     } else {
-      console.log("1"); 
       updateChart(parseInt(form.elements[0].value), parseInt(form.elements[1].value));
     }
   }
@@ -387,70 +446,9 @@ document.addEventListener("change", function (e) {
   const target = e.target.closest("#finalWeight");
   if (target && mode.name == "finalSlider") {
     if (form.elements[0].value == "") {
-      console.log("no 1st val"); 
       updateChart(90, parseInt(form.elements[1].value));
     } else {
-      console.log("2"); 
       updateChart(parseInt(form.elements[0].value), parseInt(form.elements[1].value));
     }
   }
 });
-
-function checkInputs() {
-  const form = document.getElementById("form");
-  for (let i = 0; i < form.length; i++) {
-    let id = form.elements[i].id; 
-    let stringVal = form.elements[i].value; 
-    let intVal = parseInt(form.elements[i].value); 
-    if (stringVal == "" || intVal < 0) {
-      alert("please enter a non-negative value for " + id); 
-      return false; 
-    } else if (id != "newGrade" && !intVal) {
-      alert("please enter a numerical value for " + id); 
-      return false; 
-    } else if (id != "compCreds" && intVal > 100) {
-      alert("please enter a value between 0 - 100 for " + id); 
-      return false;
-    } else if (id == "newGrade" && !intVal && (stringVal.charCodeAt(0) < 65 || stringVal.charCodeAt(0) > 70 || stringVal.charCodeAt(0) == 69)) {
-      alert("please enter a numerical value between 0 - 100 or a valid grade letter for " + id); 
-      return false; 
-    } 
-  }
-  return true; 
-}
-
-function displayResult(mode) {
-  const form = document.getElementById("form");
-  if (mode.name == "reqGrade") {
-    text = calcReqGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
-    alert("you will need at least a " + text + "% to get a " + form.elements[1].value + " in the class!");
-  } else if (mode.name == "courseGrade") {
-    text = calcCourseGrade(form.elements[0].value, form.elements[1].value, form.elements[2].value);
-    alert("you will have a " + text + " in the class!");
-  } else if (mode.name == "gpaImpact") {
-    const { newGPA: newGPA, gpaImpact: gpaImpact } = calcGpaImpact(form.elements[0].value, form.elements[1].value, form.elements[2].value, form.elements[3].value);
-    text = generateGPAText(gpaImpact); 
-    alert("new gpa: " + newGPA + "\nchanges gpa by  " + gpaImpact + "  – " + text);
-  }
-}
-
-function generateGPAText(gpaImpact) {
-  let text;
-  if (gpaImpact < 0) {
-    text = " negative ";
-  } else if (gpaImpact > 0) {
-    text = " positive ";
-  } else {
-    text = " ";
-  }
-  if (Math.abs(gpaImpact) >= 0.100) {
-    text = "high" + text + "impact";
-  } else if (Math.abs(gpaImpact) >= 0.050) {
-    text = "moderate" + text + "impact";
-  } else if (Math.abs(gpaImpact) >= 0.010) {
-    text = "slight" + text + "impact";
-  } else {
-    text = "negligible" + text + "impact";
-  }
-  return text; 
-}
