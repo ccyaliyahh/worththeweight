@@ -338,9 +338,11 @@ function createChart(currG, finalW) {
 
 function updateChart(currG, finalW) {
   clearChart(); 
+  clearToolTip(); 
   let points = chart.options.data[0].dataPoints; 
   for (let i = 0; i < 111; i += 1) { points.push({ x: i, y: calcCourseGrade(currG, i, finalW) }); }
   chart.render();
+  createToolTip(); 
 }
 
 function clearChart() {
@@ -361,7 +363,7 @@ function createToolTip() {
   const mains = document.getElementsByClassName("main");
   mains[0].appendChild(toolTip);
   mains[0].appendChild(triangle);
-  mains[0].appendChild(dot);
+  mains[0].appendChild(dot); 
 
   const dp = dPs[selectedI];
   const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
@@ -385,7 +387,7 @@ function clearToolTip() {
 }
 
 // TO-DO: 
-// update tooltip position when changing input vals, add graphic for header 
+// add graphic for header 
 // maybe: add info button to explain each formula 
 // maybe: make so that first input of the slider can actually work 
 
