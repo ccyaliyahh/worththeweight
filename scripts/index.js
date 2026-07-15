@@ -152,6 +152,8 @@ function createInputs(arrVal, arrVal2) {
     inputDiv.appendChild(inputDivText);
     inputDiv.appendChild(inputDivInput);
     inputForm.appendChild(inputDiv);
+    inputs[0].appendChild(inputForm);
+    inputDivInput.style.width = returnEvenWidth(inputDiv, inputDivText, inputDivInput); 
   }
   if (mode.name == "finalSlider") {
     const sliderContainer = document.createElement("div");
@@ -176,7 +178,7 @@ function createInputs(arrVal, arrVal2) {
     sliderMin.classList.add("inputText");
     sliderMin.id = "sliderMin";
     sliderMin.textContent = slider.min; 
-    sliderMin.style.marginLeft = "3.30vw"; 
+    sliderMin.style.marginLeft = "3.3vw"; 
 
     const sliderMax = document.createElement("span");
     sliderMax.classList.add("inputText");
@@ -189,8 +191,19 @@ function createInputs(arrVal, arrVal2) {
     sliderContainer.appendChild(slider);
     sliderContainer.appendChild(sliderMax);
     inputForm.appendChild(sliderContainer);
+    inputs[0].appendChild(inputForm);
   }
-  inputs[0].appendChild(inputForm);
+}
+
+function returnEvenWidth(div, text, input) {
+  let divWidth = div.offsetWidth; 
+  let textWidth = text.offsetWidth; 
+  let inputWidth = input.offsetWidth; 
+  const rect1 = text.getBoundingClientRect();
+  const rect2 = input.getBoundingClientRect();
+  let gapWidth = rect2.left - rect1.right; 
+  let marginWidth = parseFloat(window.getComputedStyle(text).marginLeft);
+  return (divWidth - textWidth - gapWidth - 40 - marginWidth) + "px";
 }
 
 function createEnter() {
