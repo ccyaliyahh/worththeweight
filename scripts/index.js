@@ -220,6 +220,7 @@ function updateChart(currG, finalW) {
 
 //TO-DO: 
 //maybe: make so that inputs are the same width (must somehow get width of text + param + gap) 
+//maybe: make so that first input of the slider can actually work 
 
 //START 
 let reqGrade = {
@@ -319,21 +320,28 @@ function showToolTip() {
   const tooltipDiv = document.createElement("div");
   tooltipDiv.className = "tooltip"; 
   tooltipDiv.id = "customTooltip"; 
+  const triangle = document.createElement("div");
+  triangle.className = "tooltip";
+  triangle.id = "triangle"; 
+
   const mains = document.getElementsByClassName("main"); 
   mains[0].appendChild(tooltipDiv); 
+  mains[0].appendChild(triangle); 
   
   const dp = dPs[selectedI];
   const pixelX = chart.axisX[0].convertValueToPixel(dp.x);
   const pixelY = chart.axisY[0].convertValueToPixel(dp.y);
   const chartRect = document.getElementById("chartContainer").getBoundingClientRect();
-  console.log(chartRect.top); 
   tooltipDiv.style.display = "block";
   tooltipDiv.style.left = (pixelX + chartRect.left - tooltipDiv.offsetWidth / 2) + "px";
-  tooltipDiv.style.top = (pixelY + 560 - 30) + "px";
+  tooltipDiv.style.top = (pixelY + 560 - 90) + "px";
+  tooltipDiv.innerHTML = "final exam: " + (dp.x).toString() + " \nfinal grade: " + (dp.y).toString(); 
+  triangle.style.display = "block";
+  triangle.style.left = (pixelX + chartRect.left - triangle.offsetWidth / 2) + "px";
+  triangle.style.top = (pixelY + 560 - 25) + "px";
 }
 
 function clearToolTip() {
-  console.log("clear"); 
   const toolTips = document.querySelectorAll(".tooltip");
   toolTips.forEach(elem => elem.remove());
 }

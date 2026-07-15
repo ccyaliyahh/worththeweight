@@ -196,14 +196,36 @@
 }
 
 #customTooltip {
+  background: var(--option-color);
+  border-radius: 20px;
+
   position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #888;
-  padding: 6px 10px;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: calc(0.30*var(--def-width-1));
+  padding-top: calc(0.02*var(--def-width-1));
+  padding-bottom: calc(0.03*var(--def-width-1));
   pointer-events: none;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  display: none;
   z-index: 10;
+  
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+#triangle {
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid var(--option-color); 
+
+  position: absolute;
+  display: none;
+  
+  width: 0;
+  height: 0;
+  z-index: 100;
 }
