@@ -22,7 +22,6 @@
 .main {
   display: flex; 
   flex-direction: column; 
-
   align-items: center; 
   justify-content: flex-start; 
 
@@ -31,10 +30,9 @@
 }
 
 img {
+  z-index: -10;
   position: absolute;
   top: 0; 
-
-  z-index: -10; 
 }
 
 .header {
@@ -101,7 +99,7 @@ img {
   width: var(--def-width-1); 
   height: calc(0.07*var(--main-height));
   
-  color: black;
+  color: #00005b;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
@@ -137,7 +135,7 @@ img {
 
   margin-left: calc(0.05*var(--def-width-1)); 
   
-  color: black;
+  color: #00005b;
   font-size: 27px;
   font-weight: bold;
   text-align: center;
@@ -145,12 +143,12 @@ img {
 
 .inputParam {
   outline-color: var(--option-color);
+  
+  border: 1px solid var(--option-color-active);
+  border-radius: 5px;
 
   width: calc(0.25*var(--main-width));
   height: calc(0.05*var(--main-height));
-
-  border-radius: 5px;
-  border: 1px solid var(--option-color-active); 
 }
 
 .enter {
@@ -159,11 +157,12 @@ img {
   display: flex;
   align-items: flex-start;
   justify-content: center;
+
+  margin-top: var(--def-margin);
   
   width: var(--def-width-2);
   height: calc(0.25*var(--main-height));
 
-  margin-top: var(--def-margin);
 }
 
 .enterParam {
@@ -192,31 +191,32 @@ img {
 .charts {
   outline-color: orange;
 
-  position: absolute; 
-  top: calc(0.775*var(--main-height)); 
-  left: 50%; transform: translate(-50%, calc(50% - var(--def-width-1) / 2));
-
+  z-index: 0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
 
-  z-index: 0; 
+  position: absolute; 
+  top: calc(0.775*var(--main-height)); 
+  left: 50%; transform: translate(-50%, calc(50% - var(--def-width-1) / 2));
 }
 
 #toolTip {
   background: rgb(174, 197, 243);
   border-radius: 20px;
 
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  width: calc(0.30*var(--def-width-1));
+
   padding-top: calc(0.02*var(--def-width-1));
   padding-bottom: calc(0.03*var(--def-width-1));
+
+  position: absolute;
   pointer-events: none;
   z-index: 10;
+  
+  width: calc(0.30*var(--def-width-1));
   
   color: white;
   font-size: 15px;
@@ -226,29 +226,30 @@ img {
 }
 
 #toolTipTri {
+  border-top: 20px solid var(--option-color);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 20px solid var(--option-color); 
 
-  position: absolute;
   display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
   
   width: 0;
   height: 0;
-  z-index: 15;
 }
 
 #toolTipDot {
   background: var(--option-color-active);
   border-radius: 50%;
 
-  position: absolute;
   display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
 
   width: calc(0.02*var(--def-width-1));
   height: calc(0.02*var(--def-width-1));
-  pointer-events: none;
-  z-index: 15;
 }
 
 #slider {
@@ -256,7 +257,9 @@ img {
   background: linear-gradient(to right, var(--option-color), var(--option-color-active));
   border-radius: 5px;
   outline: none;
-  margin: 20px 0;
+
+  margin: 20px 0px;
+  
   width: calc(var(--def-width-1) / 2);
   height: calc(0.02 * var(--main-height));
 }

@@ -189,7 +189,7 @@ function createInputs(arrVal, arrVal2) {
     sliderMin.classList.add("inputText");
     sliderMin.id = "sliderMin";
     sliderMin.textContent = slider.min; 
-    sliderMin.style.marginLeft = "3.3vw"; 
+    sliderMin.style.marginLeft = "2.9vw"; 
 
     const sliderMax = document.createElement("span");
     sliderMax.classList.add("inputText");
@@ -308,14 +308,14 @@ function createChart(currG, finalW) {
     },
     axisX: { 
       title: "what if? final exam score (%)", 
-      titleFontColor: "black",
+      titleFontColor: "#00005b",
       titleFontFamily: "courier new",
       titlePadding: 15,
       includeZero: true, 
     },
     axisY: { 
       title: "overall course grade", 
-      titleFontColor: "black",
+      titleFontColor: "#00005b",
       titleFontFamily: "courier new",
       titlePadding: 20,
     }, 
