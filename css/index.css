@@ -150,6 +150,9 @@ img {
 
   width: calc(0.25*var(--main-width));
   height: calc(0.05*var(--main-height));
+
+  border-radius: 5px;
+  border: 1px solid var(--option-color-active); 
 }
 
 .enter {
