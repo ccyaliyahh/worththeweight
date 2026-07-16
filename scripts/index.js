@@ -391,7 +391,7 @@ function clearToolTip() {
 }
 
 // TO-DO: 
-// make longer graphic header version - graphic header bg white!! 
+// remake graphic header (same width, height only to options, position: absolute), bg is same colour, graph same colour 
 // add info button to explain each formula!! 
 // maybe: make so first input of slider actually fires 
 
