@@ -231,7 +231,7 @@ function checkInputs() {
   for (let i = 0; i < form.length; i++) {
     let id = form.elements[i].id;
     let stringVal = form.elements[i].value;
-    let intVal = parseInt(form.elements[i].value);
+    let int2 = parseInt(form.elements[i].value);
     if (stringVal == "" || intVal < 0) {
       alert("please enter a non-negative value for " + id);
       return false;
@@ -400,7 +400,7 @@ function clearToolTip() {
 }
 
 // TO-DO: 
-// add info button to explain each formula, add input checker for what if?? 
+// add info button to explain each formula 
 // maybe: make so first input of slider actually fires 
 
 const reqGradeButton = document.getElementById("reqGrade");
@@ -462,21 +462,46 @@ inputs[0].addEventListener("input", function (e) {
 document.addEventListener("change", function (e) {
   const target = e.target.closest("#currGrade"); 
   if (target && mode.name == "finalSlider") {
-    if (form.elements[1].value == "") {
-      updateChart(parseInt(form.elements[0].value), 15);
-    } else {
-      updateChart(parseInt(form.elements[0].value), parseInt(form.elements[1].value));
-    }
+    checkInputsGraph(); 
   }
 });
 
 document.addEventListener("change", function (e) {
   const target = e.target.closest("#finalWeight");
   if (target && mode.name == "finalSlider") {
-    if (form.elements[0].value == "") {
-      updateChart(90, parseInt(form.elements[1].value));
-    } else {
-      updateChart(parseInt(form.elements[0].value), parseInt(form.elements[1].value));
-    }
+    checkInputsGraph(); 
   }
 });
+
+function checkInputsGraph() {
+  let isClear1 = true; 
+  let isClear2 = true; 
+  let input1 = 90; 
+  let input2 = 15; 
+
+  let id1 = form.elements[0].id;
+  let string1 = form.elements[0].value;
+  let int1 = parseInt(form.elements[0].value);
+  if (string1 == "") {
+    input1 = 90; 
+  } else if (int1 < 0 || int1 > 100 || Number.isNaN(int1)) {
+    isClear1 = false; 
+  } else {
+    input1 = int1; 
+  }
+  let id2 = form.elements[1].id;
+  let string2 = form.elements[1].value;
+  let int2 = parseInt(form.elements[1].value);
+  if (string2 == "") {
+    input2 = 15; 
+  } else if (int2 < 0 || int2 > 100 || Number.isNaN(int2)) {
+    isClear2 = false;
+  } else {
+    input2 = int2; 
+  }
+  if (isClear1 && isClear2) { 
+    updateChart(input1, input2); 
+  } else {
+    alert("please enter numerical values between 0-100 for both inputs, or leave blank for default values"); 
+  }
+}
