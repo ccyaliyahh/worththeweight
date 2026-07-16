@@ -55,8 +55,6 @@ img {
   align-items: center;
   justify-content: center; 
 
-  margin-top: var(--def-margin); 
-
   width: var(--def-width-1); 
   height: calc(0.1*var(--main-height)); 
   gap: calc(0.05*var(--main-height));

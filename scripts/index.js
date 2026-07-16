@@ -77,19 +77,28 @@ let mode = reqGrade;
 let mode2 = reqGradeText;
 createScreen(mode, mode2); 
 
-console.log(document.getElementsByClassName("main")[0].offsetWidth); 
-console.log(document.getElementsByClassName("main")[0].offsetHeight); 
-
 function createScreen(array, array2) {
   clearScreen(); 
+  const options = document.getElementsByClassName("options"); 
+  if (array.name == "reqGrade" || array.name == "courseGrade") {
+    options[0].style.marginTop = (1.3 * 0.05 * 95) + "vh"; 
+  } else if (array.name == "finalSlider") {
+    options[0].style.marginTop = (1 * 0.05 * 95) + "vh"; 
+  } else if (array.name == "gpaImpact") {
+    options[0].style.marginTop = (1.1 * 0.05 * 95) + "vh"; 
+  }
+
   const mains = document.getElementsByClassName("main");
+  const images = document.getElementsByClassName("image"); 
   createAbout(array.name);
   createInputs(array.value, array2.value);
   if (array.name == "finalSlider") {
     mains[0].style.height = "154.75vh"; //95+55+4.75
+    images[0].src = "images/grade-calculator-graphic-2.svg"; 
     createChart(90, 15); 
   } else {
     mains[0].style.height = "95vh"; 
+    images[0].src = "images/grade-calculator-graphic-1.svg"
     createEnter();
   }
 }
@@ -291,6 +300,7 @@ function createChart(currG, finalW) {
     interactivityEnabled: true,
     showTooltip: true,
     titleWrap: true, 
+    backgroundColor: "#dcebff", 
     title: { 
       text: "so what if?", 
       fontColor: "rgb(125, 155, 215)", 
@@ -391,7 +401,6 @@ function clearToolTip() {
 }
 
 // TO-DO: 
-// remake graphic header (same width, height only to options, position: absolute), bg is same colour, graph same colour 
 // add info button to explain each formula!! 
 // maybe: make so first input of slider actually fires 
 
