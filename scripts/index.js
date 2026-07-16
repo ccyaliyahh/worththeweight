@@ -391,8 +391,8 @@ function clearToolTip() {
 }
 
 // TO-DO: 
-// add graphic for header 
-// maybe: add info button to explain each formula 
+// make longer graphic header version - graphic header bg white!! 
+// add info button to explain each formula!! 
 // maybe: make so first input of slider actually fires 
 
 const reqGradeButton = document.getElementById("reqGrade");
