@@ -3,14 +3,14 @@
 function calcReqGrade(currGrade, targetGrade, finalWeight) {
   let w = finalWeight / 100;
   let reqGrade = (targetGrade - (currGrade * (1 - w))) / w;
-  return reqGrade;
+  return Math.round(reqGrade * 100) / 100;
 }
 // G = F*w + C*(1 - w) 
 // G = course grade, F = final grade, w = % weight as decimal, C = current grade 
 function calcCourseGrade(currGrade, finalGrade, finalWeight) {
   let w = finalWeight / 100;
   let courseGrade = (finalGrade * w) + (currGrade * (1 - w));
-  return courseGrade;
+  return Math.round(courseGrade * 100) / 100;
 }
 // I = (G*C + N*c) / (C + c)
 // I = gpa impact, G = current gpa, C = completed credits, N = new course grade, c = new course credits, 
@@ -31,7 +31,7 @@ function calcGpaImpact(currGPA, compCreds, newGrade, newCreds) {
   let totalPoints = currGPA * compCreds + newGrade * newCreds;
   let totalCreds = parseInt(compCreds) + parseInt(newCreds);
   let newGPA = Math.round((totalPoints / totalCreds) * 100) / 100;
-  let gpaImpact = Math.round((newGPA - currGPA) * 1000) / 1000;
+  let gpaImpact = Math.round((newGPA - currGPA) * 100) / 100;
   return { newGPA, gpaImpact };
 }
 
@@ -236,21 +236,26 @@ function checkInputs() {
     let id = form.elements[i].id;
     let stringVal = form.elements[i].value;
     let intVal = parseInt(form.elements[i].value); 
-    const regex = /[^0-9.]/g; //matches any char that's not a digit or decimal 
-    const regex1 = /.*[^0-9\.ABCDF\+\-].*/; //matches any char that's not a digit, decimal, +, -, or letters ABCDF 
+    const noDiDec = /[^0-9.]/g; //matches any char that's not a digit or decimal 
+    const noDiDecPML = /.*[^0-9\.ABCDF\+\-].*/; //matches any char that's not a digit, decimal, +, -, or letters ABCDF 
+    const search = [".", "+", "-"]; //search: only special char 
+    
     if (stringVal == "" || intVal < 0) {
       alert("please enter a non-negative value for " + id);
       return false;
-    } else if (id != "newGrade" && regex.test(stringVal)) {
+    } else if (id != "newGrade" && noDiDec.test(stringVal)) {
       alert("please enter a numerical value for " + id);
       return false; 
     } else if (id != "compCreds" && intVal > 100) {
       alert("please enter a value between 0 - 100 for " + id);
       return false;
-    } else if (id == "newGrade" && regex1.test(stringVal)) {
+    } else if (id == "newGrade" && noDiDecPML.test(stringVal)) {
       alert("please enter a numerical value between 0 - 100 or a valid grade letter for " + id);
       return false;
-    } //id == "newGrade" && isNaN(intVal) && (stringVal.charCodeAt(0) < 65 || stringVal.charCodeAt(0) > 70 || stringVal.charCodeAt(0) == 69)
+    } else if (id != "newGrade" && search.some(val => stringVal.includes(val)) && noDiDec.test(stringVal)) { // only has special char 
+      alert("please enter a numerical value for " + id); 
+      return false; 
+    } 
   }
   return true;
 }
@@ -370,7 +375,7 @@ function clearChart() {
 }
 
 function checkInputsGraph() {
-  const regex = /[^0-9.]/g; //matches any char that's not a digit or decimal 
+  const noDiDec = /[^0-9.]/g; //matches any char that's not a digit or decimal 
   let isClear1 = true;
   let isClear2 = true;
   let input1 = 90;
@@ -381,7 +386,7 @@ function checkInputsGraph() {
   let int1 = parseInt(form.elements[0].value);
   if (string1 == "") {
     input1 = 90;
-  } else if (int1 < 0 || int1 > 100 || regex.test(string1)) {
+  } else if (int1 < 0 || int1 > 100 || noDiDec.test(string1)) {
     isClear1 = false;
   } else {
     input1 = int1;
@@ -391,7 +396,7 @@ function checkInputsGraph() {
   let int2 = parseInt(form.elements[1].value);
   if (string2 == "") {
     input2 = 15;
-  } else if (int2 < 0 || int2 > 100 || regex.test(string2)) {
+  } else if (int2 < 0 || int2 > 100 || noDiDec.test(string2)) {
     isClear2 = false;
   } else {
     input2 = int2;
