@@ -216,10 +216,13 @@ function returnEvenWidth(div, text, input) {
   let divWidth = div.offsetWidth;
   let textWidth = text.offsetWidth;
   let inputWidth = input.offsetWidth;
+
   const rect1 = text.getBoundingClientRect();
   const rect2 = input.getBoundingClientRect();
+
   let gapWidth = rect2.left - rect1.right;
   let marginWidth = parseFloat(window.getComputedStyle(text).marginLeft);
+  
   return (divWidth - textWidth - gapWidth - 40 - marginWidth) + "px";
 }
 
@@ -237,7 +240,7 @@ function checkInputs() {
   for (let i = 0; i < form.length; i++) {
     let id = form.elements[i].id;
     let stringVal = form.elements[i].value;
-    let intVal = parseInt(form.elements[i].value);
+    let intVal = parseInt(stringVal);
     const noDiDec = /[^0-9.]/g; //matches any char that's not a digit or decimal 
     const noDiDecPML = /.*[^0-9\.ABCDF\+\-].*/; //matches any char that's not a digit, decimal, +, -, or letters ABCDF 
     const search = [".", "+", "-"]; //search: only special char 
@@ -303,6 +306,7 @@ function createChart(currG, finalW) {
   chartContainer.classList.add("charts");
   chartContainer.id = "chartContainer";
   chartContainer.style = "height: var(--def-width-1); width: calc(1.1 * var(--def-width-2));"
+  
   const main = document.getElementsByClassName("main")[0];
   main.appendChild(chartContainer);
 
@@ -388,7 +392,7 @@ function checkInputsGraph() {
 
   let id1 = form.elements[0].id;
   let string1 = form.elements[0].value;
-  let int1 = parseInt(form.elements[0].value);
+  let int1 = parseInt(string1);
   if (string1 == "") {
     input1 = 90;
   } else if (int1 < 0 || int1 > 100 || noDiDec.test(string1)) {
@@ -399,7 +403,7 @@ function checkInputsGraph() {
 
   let id2 = form.elements[1].id;
   let string2 = form.elements[1].value;
-  let int2 = parseInt(form.elements[1].value);
+  let int2 = parseInt(string2);
   if (string2 == "") {
     input2 = 15;
   } else if (int2 < 0 || int2 > 100 || noDiDec.test(string2)) {
