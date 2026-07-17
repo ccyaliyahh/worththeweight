@@ -106,7 +106,9 @@ function createScreen(array, array2) {
 }
 
 function clearScreen() {
-  if (isChart) { clearChart(); }
+  if (isChart) { 
+    clearChart(); 
+  }
   const enterParams = document.querySelectorAll(".enterParam");
   enterParams.forEach(elem => elem.remove());
   const charts = document.querySelectorAll(".charts");
@@ -146,6 +148,7 @@ function createInputs(arrVal, arrVal2) {
   const inputs = document.getElementsByClassName("inputs");
   const inputForm = document.createElement("form");
   inputForm.id = "form";
+
   for (let i = 0; i < arrVal.length; i++) {
     const inputDiv = document.createElement("div");
     inputDiv.classList.add("input");
@@ -169,6 +172,7 @@ function createInputs(arrVal, arrVal2) {
     inputs[0].appendChild(inputForm);
     inputDivInput.style.width = returnEvenWidth(inputDiv, inputDivText, inputDivInput);
   }
+
   if (mode.name == "finalSlider") { //create inputs before create chart
     const sliderContainer = document.createElement("div");
     sliderContainer.classList.add("input");
@@ -347,7 +351,6 @@ function createChart(currG, finalW) {
     },
   });
   isChart = true;
-
   for (let i = 0; i < 111; i += 1) {
     xVal = i;
     yVal = calcCourseGrade(currG, i, finalW);
@@ -364,13 +367,17 @@ function updateChart(currG, finalW) {
   clearChart();
   clearToolTip();
   let points = chart.options.data[0].dataPoints;
-  for (let i = 0; i < 111; i += 1) { points.push({ x: i, y: calcCourseGrade(currG, i, finalW) }); }
+  for (let i = 0; i < 111; i += 1) { 
+    points.push({ x: i, y: calcCourseGrade(currG, i, finalW) }); 
+  }
   chart.render();
   createToolTip();
 }
 
 function clearChart() {
-  for (let i = 0; i < 111; i += 1) { chart.options.data[0].dataPoints.shift(); } 
+  for (let i = 0; i < 111; i += 1) { 
+    chart.options.data[0].dataPoints.shift(); 
+  } 
   clearToolTip(); 
 }
 
@@ -391,6 +398,7 @@ function checkInputsGraph() {
   } else {
     input1 = int1;
   }
+
   let id2 = form.elements[1].id;
   let string2 = form.elements[1].value;
   let int2 = parseInt(form.elements[1].value);
@@ -483,7 +491,9 @@ finalSliderButton.addEventListener("click", () => {
 const enters = document.getElementsByClassName("enter");
 enters[0].addEventListener("click", (event) => {
   const enterButton = event.target.closest(".enterParam");
-  if (enterButton && checkInputs()) { displayResult(mode); }
+  if (enterButton && checkInputs()) { 
+    displayResult(mode); 
+  }
 });
 
 const inputs = document.getElementsByClassName("inputs");
