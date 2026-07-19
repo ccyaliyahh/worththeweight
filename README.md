@@ -11,11 +11,11 @@
 - what if? grade visualizer showing max - min final grades possible, with interactive slider and line graph 
 
 # credits: 
-- **formulas: **
+- **formulas:**
   - rogerhub.com/final-grade-calculator 
   - cumgpacalculator.com/course-impact-calculator 
-- **libraries: **
+- **libraries:**
   - canvajs — graph functionality 
-- **graphics: ** 
+- **graphics:** 
   - adobe photoshop 
   - adobe illustrator 
