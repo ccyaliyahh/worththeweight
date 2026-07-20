@@ -10,14 +10,14 @@ this website takes in inputs of current grade and final weight. it calculates: m
 
 this is a github-hosted website, so just access through the link in the about section. cheers! 
 
-## acknowledgments
+## acknowledgments 
 
 inspiration, formulas, etc 
 * **formulas:**
   - rogerhub.com/final-grade-calculator 
   - cumgpacalculator.com/course-impact-calculator 
-- **libraries:**
+* **libraries:**
   - canvajs — graph functionality 
-- **graphics:** 
+* **graphics:** 
   - adobe photoshop 
   - adobe illustrator
